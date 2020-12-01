@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CsScore.Services;
+using CsScore.Services.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace CsScore.Models.Context
 {
@@ -16,9 +20,39 @@ namespace CsScore.Models.Context
 
         public DbSet<Project> Project { get; set; }
 
-        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options, IOptions<UserSetting> userSetting) : base(options)
         {
             Database.EnsureCreated();
+
+            var initType = Type.Include(t=> t.Users).FirstOrDefault(t => t.HasDashboardAccess);
+            if (initType == null)
+            {
+                initType = new Type
+                {
+                    AvailableSubmit = 0,
+                    PointPerSubmit = 0,
+                    Name = "Super User",
+                    HasDashboardAccess = true,
+                    Users = new List<User>(),
+                };
+
+                Type.Add(initType);
+            }
+            if (!initType.Users.Any())
+            {
+                var initUser = new User
+                {
+                    Id = "000000000",
+                    Type = initType,
+                    FirstName = "Super",
+                    LastName = "User",
+                    Password = userSetting.Value.SuperUserPassword,
+                };
+
+                initType.Users.Add(initUser);
+            }
+
+            SaveChanges();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

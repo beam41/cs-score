@@ -16,5 +16,8 @@ namespace CsScore.Models.Dto
 
         [Required]
         public int PointPerSubmit { get; set; }
+
+        [Required]
+        public bool HasDashboardAccess { get; set; }
     }
 }

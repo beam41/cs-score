@@ -88,6 +88,9 @@ namespace CsScore.Migrations
                     b.Property<int>("AvailableSubmit")
                         .HasColumnType("int");
 
+                    b.Property<bool>("HasDashboardAccess")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

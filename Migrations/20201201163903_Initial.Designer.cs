@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CsScore.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20201201132652_Initial")]
+    [Migration("20201201163903_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,6 +89,9 @@ namespace CsScore.Migrations
 
                     b.Property<int>("AvailableSubmit")
                         .HasColumnType("int");
+
+                    b.Property<bool>("HasDashboardAccess")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

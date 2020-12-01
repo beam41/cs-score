@@ -9,6 +9,6 @@ namespace CsScore.Services.Interfaces
     {
         public string Secret { get; set; }
 
-        public string PasswordSalt { get; set; }
+        public string SuperUserPassword { get; set; }
     }
 }

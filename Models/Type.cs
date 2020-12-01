@@ -19,6 +19,9 @@ namespace CsScore.Models
         [Required]
         public int PointPerSubmit { get; set; }
 
+        [Required]
+        public bool HasDashboardAccess { get; set; }
+
         public ICollection<User> Users { get; set; }
     }
 }

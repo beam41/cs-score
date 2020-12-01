@@ -27,7 +27,8 @@ namespace CsScore.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false),
                     AvailableSubmit = table.Column<int>(nullable: false),
-                    PointPerSubmit = table.Column<int>(nullable: false)
+                    PointPerSubmit = table.Column<int>(nullable: false),
+                    HasDashboardAccess = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
