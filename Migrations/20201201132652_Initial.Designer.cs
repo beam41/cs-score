@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CsScore.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20201201113944_Initial")]
+    [Migration("20201201132652_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,9 +60,10 @@ namespace CsScore.Migrations
 
             modelBuilder.Entity("CsScore.Models.Score", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FromUserId")
                         .HasColumnType("nvarchar(450)");

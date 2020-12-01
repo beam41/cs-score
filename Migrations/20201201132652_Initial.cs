@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CsScore.Migrations
 {
@@ -87,7 +86,8 @@ namespace CsScore.Migrations
                 name: "Score",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FromUserId = table.Column<string>(nullable: true),
                     ToProjectId = table.Column<int>(nullable: true)
                 },
