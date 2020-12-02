@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -118,6 +118,62 @@ namespace CsScore.Controllers
             }
 
             return CreatedAtAction("GetUser", newUsers);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditType(string id, UserCreateDto user)
+        {
+            var type = new Type { Id = user.TypeId };
+            _context.Type.Attach(type);
+
+            var editType = new User()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Password = user.Password ?? _randomService.RandomPassword(6),
+                Type = type,
+            };
+
+            _context.Entry(editType).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await UserExists(id))
+                {
+                    return NotFound();
+                }
+
+                throw;
+            }
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteType(string id)
+        {
+            var deleteType = new User { Id = id };
+
+            _context.Entry(deleteType).State = EntityState.Deleted;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await UserExists(id))
+                {
+                    return NotFound();
+                }
+
+                throw;
+            }
+            return NoContent();
         }
 
         private Task<bool> UserExists(string id)
