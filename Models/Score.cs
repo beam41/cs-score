@@ -12,5 +12,7 @@ namespace CsScore.Models
         public User FromUser { get; set; }
 
         public Project ToProject { get; set; }
+
+        public DateTimeOffset SubmitDate { get; set; }
     }
 }

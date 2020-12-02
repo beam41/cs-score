@@ -17,5 +17,9 @@ namespace CsScore.Models
         public Group OwnerGroup { get; set; }
 
         public ICollection<Score> ScoreRecords { get; set; }
+
+        public DateTimeOffset SubmitDate { get; set; }
+
+        public DateTimeOffset UpdatedDate { get; set; }
     }
 }

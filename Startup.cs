@@ -70,6 +70,8 @@ namespace CsScore
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             });
+
+            services.AddSingleton<RandomService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

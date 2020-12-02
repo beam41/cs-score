@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201202084012_SubmitDate.cs" />
+    <Compile Remove="Migrations\20201202084012_SubmitDate.Designer.cs" />
+    <Compile Remove="Migrations\20201202084345_SubmitDate.cs" />
+    <Compile Remove="Migrations\20201202084345_SubmitDate.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.10" />

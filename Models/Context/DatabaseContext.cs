@@ -20,11 +20,13 @@ namespace CsScore.Models.Context
 
         public DbSet<Project> Project { get; set; }
 
-        public DatabaseContext(DbContextOptions<DatabaseContext> options, IOptions<UserSetting> userSetting) : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options, IOptions<UserSetting> userSetting) :
+            base(options)
         {
             Database.EnsureCreated();
 
-            var initType = Type.Include(t=> t.Users).FirstOrDefault(t => t.HasDashboardAccess);
+            var save = false;
+            var initType = Type.Include(t => t.Users).FirstOrDefault(t => t.HasDashboardAccess);
             if (initType == null)
             {
                 initType = new Type
@@ -37,10 +39,13 @@ namespace CsScore.Models.Context
                 };
 
                 Type.Add(initType);
+                save = true;
             }
+
+            User initUser = null;
             if (!initType.Users.Any())
             {
-                var initUser = new User
+                initUser = new User
                 {
                     Id = "000000000",
                     Type = initType,
@@ -50,13 +55,38 @@ namespace CsScore.Models.Context
                 };
 
                 initType.Users.Add(initUser);
+                save = true;
+            }
+
+            if (save) {
+                SaveChanges();
+            }
+
+            Entry(initType).State = EntityState.Detached;
+
+            if (initUser != null)
+            {
+                Entry(initUser).State = EntityState.Detached;
             }
 
             SaveChanges();
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Project>()
+                .Property(p => p.SubmitDate)
+                .HasDefaultValueSql("getdate()");
+
+            modelBuilder.Entity<Project>()
+                .Property(p => p.UpdatedDate)
+                .HasDefaultValueSql("getdate()");
+
+            modelBuilder.Entity<Score>()
+                .Property(s => s.SubmitDate)
+                .HasDefaultValueSql("getdate()");
+
             modelBuilder.Entity<User>()
                 .Property(u => u.Id)
                 .ValueGeneratedNever();
