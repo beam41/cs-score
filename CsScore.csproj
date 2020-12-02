@@ -1,15 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Migrations\20201202084012_SubmitDate.cs" />
-    <Compile Remove="Migrations\20201202084012_SubmitDate.Designer.cs" />
-    <Compile Remove="Migrations\20201202084345_SubmitDate.cs" />
-    <Compile Remove="Migrations\20201202084345_SubmitDate.Designer.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.10" />

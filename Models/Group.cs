@@ -14,8 +14,6 @@ namespace CsScore.Models
 
         public ICollection<User> UsersInGroup { get; set; }
 
-        public int GroupProjectRef { get; set; }
-
         [Required]
         public Project GroupProject { get; set; }
     }

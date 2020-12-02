@@ -87,6 +87,10 @@ namespace CsScore.Models.Context
                 .Property(s => s.SubmitDate)
                 .HasDefaultValueSql("getdate()");
 
+            modelBuilder.Entity<Group>()
+                .Property(g => g.Id)
+                .ValueGeneratedNever();
+
             modelBuilder.Entity<User>()
                 .Property(u => u.Id)
                 .ValueGeneratedNever();
@@ -102,7 +106,7 @@ namespace CsScore.Models.Context
             modelBuilder.Entity<Group>()
                 .HasOne(g => g.GroupProject)
                 .WithOne(p => p.OwnerGroup)
-                .HasForeignKey<Group>(g => g.GroupProjectRef);
+                .HasForeignKey<Project>(g => g.GroupId);
 
             modelBuilder.Entity<Score>()
                 .HasOne(sc => sc.FromUser)

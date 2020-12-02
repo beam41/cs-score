@@ -18,6 +18,9 @@ namespace CsScore.Models
 
         public ICollection<Score> ScoreRecords { get; set; }
 
+        [Required]
+        public int GroupId { get; set; }
+
         public DateTimeOffset SubmitDate { get; set; }
 
         public DateTimeOffset UpdatedDate { get; set; }

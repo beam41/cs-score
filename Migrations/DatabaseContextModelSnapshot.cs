@@ -22,20 +22,12 @@ namespace CsScore.Migrations
             modelBuilder.Entity("CsScore.Models.Group", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("GroupProjectRef")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GroupProjectRef")
-                        .IsUnique();
 
                     b.ToTable("Group");
                 });
@@ -46,6 +38,9 @@ namespace CsScore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -62,6 +57,9 @@ namespace CsScore.Migrations
                         .HasDefaultValueSql("getdate()");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GroupId")
+                        .IsUnique();
 
                     b.ToTable("Project");
                 });
@@ -150,11 +148,11 @@ namespace CsScore.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("CsScore.Models.Group", b =>
+            modelBuilder.Entity("CsScore.Models.Project", b =>
                 {
-                    b.HasOne("CsScore.Models.Project", "GroupProject")
-                        .WithOne("OwnerGroup")
-                        .HasForeignKey("CsScore.Models.Group", "GroupProjectRef")
+                    b.HasOne("CsScore.Models.Group", "OwnerGroup")
+                        .WithOne("GroupProject")
+                        .HasForeignKey("CsScore.Models.Project", "GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
