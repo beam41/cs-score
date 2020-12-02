@@ -121,7 +121,7 @@ namespace CsScore.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditType(string id, UserCreateDto user)
+        public async Task<IActionResult> EditType(string id, UserEditDto user)
         {
             var type = new Type { Id = user.TypeId };
             _context.Type.Attach(type);
@@ -134,6 +134,16 @@ namespace CsScore.Controllers
                 Password = user.Password ?? _randomService.RandomPassword(6),
                 Type = type,
             };
+
+            if (user.GroupId != null)
+            {
+                var group = new Group { Id = (int) user.GroupId };
+                _context.Group.Attach(group);
+                editType.Group = group;
+            }
+            
+
+            
 
             _context.Entry(editType).State = EntityState.Modified;
 
