@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CsScore.Middlewares;
 using CsScore.Models.Context;
 using CsScore.Services;
 using CsScore.Services.Interfaces;
@@ -71,7 +72,10 @@ namespace CsScore
                 options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             });
 
-            services.AddSingleton<RandomService>();
+            services.AddSingleton<IRandomService, RandomService>();
+            services.AddSingleton<IAuthService, AuthService>();
+
+            services.AddScoped<IUserScopedService, UserScopedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,8 +87,9 @@ namespace CsScore
             }
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseUserMiddleware();
 
             app.UseEndpoints(endpoints =>
             {

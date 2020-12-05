@@ -7,22 +7,27 @@ using Microsoft.EntityFrameworkCore;
 using CsScore.Models;
 using CsScore.Models.Context;
 using CsScore.Models.Dto;
-using CsScore.Services;
+using CsScore.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CsScore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly DatabaseContext _context;
 
-        private readonly RandomService _randomService;
+        private readonly IRandomService _randomService;
 
-        public UsersController(DatabaseContext context, RandomService randomService)
+        private readonly IAuthService _authService;
+
+        public UsersController(DatabaseContext context, IRandomService randomService, IAuthService authService)
         {
             _context = context;
             _randomService = randomService;
+            _authService = authService;
         }
 
         [HttpGet]
@@ -184,6 +189,36 @@ namespace CsScore.Controllers
                 throw;
             }
             return NoContent();
+        }
+
+        [HttpPost("login")]
+        [AllowAnonymous]
+        public async Task<ActionResult<UserLoginInfoDto>> Login(UserLoginDto data)
+        {
+            var userResult = await _context.User
+                .Where(u => u.Id == data.Id && u.Password == data.Password)
+                .Select(u => new 
+                {
+                    u.Id,
+                    u.Type.HasDashboardAccess
+                }).FirstOrDefaultAsync();
+
+            if (userResult == null)
+            {
+                return Unauthorized();
+            }
+
+            var user = new UserLoginInfoDto
+            {
+                Id = userResult.Id,
+                Token = _authService.GenToken(new UserLoginTokenDto
+                {
+                    Id = userResult.Id,
+                    TypeHasDashboardAccess = userResult.HasDashboardAccess,
+                }),
+            };
+
+            return user;
         }
 
         private Task<bool> UserExists(string id)
