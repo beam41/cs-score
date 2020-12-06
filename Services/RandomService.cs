@@ -11,6 +11,8 @@ namespace CsScore.Services
     {
         private readonly Random _random = new Random();
 
+        private const string StrSet = "0123456789ABCDEFGHIJKLMNOPQRSTUVQXYZabcdefghijklmnopqrstuvwxyz";
+
         public int RandomNumber(int min, int max)
         {
             return _random.Next(min, max);
@@ -18,17 +20,8 @@ namespace CsScore.Services
 
         public string RandomPassword(int size)
         {
-            var builder = new StringBuilder(size);
 
-            for (var i = 0; i < size; i++)
-            {
-                var offset = _random.Next(0, 2) != 0 ? 'a' : 'A';
-                const int lettersOffset = 26;
-                var @char = (char)_random.Next(offset, offset + lettersOffset);
-                builder.Append(@char);
-            }
-
-            return builder.ToString();
+            return Nanoid.Nanoid.Generate(StrSet, size);
         }
     }
 }
