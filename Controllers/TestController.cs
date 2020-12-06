@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CsScore.Attribute;
+using CsScore.Attribute.Filter;
 using CsScore.Enums;
 using CsScore.Models.Dto;
 using CsScore.Services.Interfaces;
@@ -17,18 +18,16 @@ namespace CsScore.Controllers
     [Authorize]
     public class TestController : ControllerBase
     {
-        private readonly IUserScopedService _userScopedService;
 
-        public TestController(IUserScopedService userScopedService)
+        public TestController()
         {
-            _userScopedService = userScopedService;
         }
 
         [HttpGet]
-        [AccessLevel(AccessLevel.Admin)]
+        [AccessLevelFilter(AccessLevel.Admin)]
         public ActionResult<UserLoginTokenDto> TestUserToken()
         {
-            return _userScopedService.User;
+            return HttpContext.Items["User"] as UserLoginTokenDto;
         }
     }
 }
