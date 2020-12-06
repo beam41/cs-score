@@ -8,6 +8,7 @@ using CsScore.Models;
 using CsScore.Models.Context;
 using CsScore.Models.Dto;
 using CsScore.Services.Interfaces;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authorization;
 
 namespace CsScore.Controllers
@@ -205,10 +206,10 @@ namespace CsScore.Controllers
 
             if (userResult == null)
             {
-                return Unauthorized(new ProblemDetails
+                throw new ProblemDetailsException(new ProblemDetails
                 {
                     Title = "Unauthorized",
-                    Status = 401,
+                    Status = StatusCodes.Status401Unauthorized,
                     Detail = "Invalid User Info",
                 });
             }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using CsScore.Enums;
 using CsScore.Models.Dto;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
@@ -38,8 +40,12 @@ namespace CsScore.Attribute.Filter
                 context.Result = new UnauthorizedObjectResult(new ProblemDetails
                 {
                     Title = "Unauthorized",
-                    Status = 401,
+                    Status = StatusCodes.Status401Unauthorized,
                     Detail = "Invalid User Info",
+                    Extensions =
+                    {
+                        {"traceId", Activity.Current?.Id ?? context.HttpContext.TraceIdentifier},
+                    },
                 });
                 return;
             }
