@@ -205,7 +205,12 @@ namespace CsScore.Controllers
 
             if (userResult == null)
             {
-                return Unauthorized();
+                return Unauthorized(new ProblemDetails
+                {
+                    Title = "Unauthorized",
+                    Status = 401,
+                    Detail = "Invalid User Info",
+                });
             }
 
             var user = new UserLoginInfoDto

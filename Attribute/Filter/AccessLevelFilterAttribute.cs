@@ -35,7 +35,12 @@ namespace CsScore.Attribute.Filter
 
             if (_level == AccessLevel.Admin && user.TypeHasDashboardAccess == false)
             {
-                context.Result = new UnauthorizedObjectResult("Invalid Access");
+                context.Result = new UnauthorizedObjectResult(new ProblemDetails
+                {
+                    Title = "Unauthorized",
+                    Status = 401,
+                    Detail = "Invalid User Info",
+                });
                 return;
             }
 

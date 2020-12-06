@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CsScore.Models.Context;
 using CsScore.Services;
 using CsScore.Services.Interfaces;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -73,6 +74,7 @@ namespace CsScore
 
             services.AddSingleton<IRandomService, RandomService>();
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddProblemDetails();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,6 +85,7 @@ namespace CsScore
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseProblemDetails();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
