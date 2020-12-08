@@ -24,7 +24,7 @@ namespace CsScore.Controllers
         }
 
         [HttpGet]
-        [AccessLevelFilter(AccessLevel.Admin)]
+        [AccessLevelFilter]
         public ActionResult<UserLoginTokenDto> TestUserToken()
         {
             return HttpContext.Items["User"] as UserLoginTokenDto;

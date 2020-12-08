@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CsScore.Attribute.Filter;
+using CsScore.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CsScore.Models;
 using CsScore.Models.Context;
 using CsScore.Models.Dto;
+using Hellang.Middleware.ProblemDetails;
 
 namespace CsScore.Controllers
 {
@@ -63,8 +66,21 @@ namespace CsScore.Controllers
         }
 
         [HttpPut("{id}")]
+        [AccessLevelFilter(AccessLevel.User)]
         public async Task<ActionResult<Group>> EditName(int id, GroupEditName group)
         {
+            var user = HttpContext.Items["User"] as UserLoginTokenDto;
+
+            if (!await GroupExists(id, user?.Id))
+            {
+                throw new ProblemDetailsException(new ProblemDetails
+                {
+                    Title = "Forbidden",
+                    Status = StatusCodes.Status403Forbidden,
+                    Detail = "Invalid Group",
+                });
+            }
+
             var newGroups = new Group
             {
                 Id = id,
@@ -93,6 +109,11 @@ namespace CsScore.Controllers
         private Task<bool> GroupExists(int id)
         {
             return _context.Group.AnyAsync(e => e.Id == id);
+        }
+
+        private Task<bool> GroupExists(int id, string userId)
+        {
+            return _context.Group.AnyAsync(e => e.Id == id && e.UsersInGroup.Any(user => user.Id == userId));
         }
     }
 }

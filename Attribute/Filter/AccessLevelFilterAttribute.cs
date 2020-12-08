@@ -14,7 +14,7 @@ namespace CsScore.Attribute.Filter
     {
         private readonly AccessLevel _level;
 
-        public AccessLevelFilterAttribute(AccessLevel level = AccessLevel.None)
+        public AccessLevelFilterAttribute(AccessLevel level = AccessLevel.Admin)
         {
             _level = level;
         }
